@@ -13,7 +13,7 @@ public class GameTest {
 
     @Before
     public void createGame() {
-        game =  new Game(Board.emptyBoard());
+        game = new Game(Board.emptyBoard());
     }
 
     @Test
@@ -41,10 +41,10 @@ public class GameTest {
         game.turn(5);
 
         int userPosition = game.userPosition();
-        assertThat(userPosition,is(equalTo(16)));
+        assertThat(userPosition, is(equalTo(16)));
 
         GameStatus status = game.status();
-        assertThat(status,is(equalTo(GameStatus.IN_PROGRESS)));
+        assertThat(status, is(equalTo(GameStatus.IN_PROGRESS)));
     }
 
     @Test
@@ -70,21 +70,58 @@ public class GameTest {
         game.turn(5);
         game.turn(5);
         int userPosition = game.userPosition();
-        assertThat(userPosition,is(equalTo(100)));
+        assertThat(userPosition, is(equalTo(100)));
 
         GameStatus status = game.status();
-        assertThat(status,is(equalTo(GameStatus.FINISHED)));
+        assertThat(status, is(equalTo(GameStatus.FINISHED)));
     }
 
     @Test
     public void givenGameBoardWithLadder_WhenUserThrowADieAndMoveToPositionWithLadder_ThenUserShouldClimbTheLadderToReachNextPosition() throws Exception {
-        Board board = Board.newBoardWithLadder(Ladder.from(4, 24));
+        Board board = Board.newBoardWithLadders(Ladder.from(4, 24));
         Game game = new Game(board);
 
         game.turn(4);
 
         int userPosition = game.userPosition();
 
-        assertThat(userPosition,is(equalTo(24)));
+        assertThat(userPosition, is(equalTo(24)));
+    }
+
+
+    @Test
+    public void givenGameBoardWithMultipleLadders_WhenUserThrowDieMultipleTimesAndMoveToPositionWithLadder_ThenUserShouldClimbTheLadder() throws Exception {
+        Board board = Board.newBoardWithLadders(Ladder.from(4, 24), Ladder.from(8, 34), Ladder.from(44, 78), Ladder.from(72, 93));
+        Game game = new Game(board);
+
+        game.turn(4);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+
+        int userPosition = game.userPosition();
+
+        assertThat(userPosition, is(equalTo(78)));
+
+    }
+
+    @Test
+    public void givenGameBoardWithLaddersAndSnakes_WhenUserThrowDieAndUserLandsOnSnake_ThenUserShouldBeMovedToLowerPosition() throws Exception {
+        Ladder[] ladders = {Ladder.from(4, 24), Ladder.from(8, 34), Ladder.from(44, 78), Ladder.from(72, 93)};
+        Snake[] snakes = {Snake.at(15, 5)};
+        Board board = Board.newBoardWithLaddersAndSnakes(ladders, snakes);
+        Game game = new Game(board);
+
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+
+        int userPosition = game.userPosition();
+
+        assertThat(userPosition, is(equalTo(5)));
+
     }
 }

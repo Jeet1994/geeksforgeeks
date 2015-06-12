@@ -17,6 +17,9 @@ public class Game {
         if(board.isLadderAt(currentUserPosition)){
             currentUserPosition = board.getLadderAt(currentUserPosition).getEnd();
         }
+        if(board.isSnakeAt(currentUserPosition)){
+            currentUserPosition = board.getSnakeAt(currentUserPosition).getTo();
+        }
         UserPositionTuple tuple = new UserPositionTuple(currentUserPosition);
         board.setUserPosition(tuple);
     }
