@@ -22,4 +22,12 @@ public class Ladder {
     public int getEnd() {
         return end;
     }
+
+    @Override
+    public String toString() {
+        return "Ladder{" +
+                "start=" + start +
+                ", end=" + end +
+                '}';
+    }
 }

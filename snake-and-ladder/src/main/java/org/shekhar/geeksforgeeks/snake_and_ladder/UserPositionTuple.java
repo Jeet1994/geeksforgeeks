@@ -4,9 +4,9 @@ public class UserPositionTuple {
         private int first;
         private int second;
 
-        public UserPositionTuple(int userPosition) {
-            first = (userPosition-1) / 10;
-            second = (userPosition - 1) % 10;
+        public UserPositionTuple(int userPosition, int size) {
+            first = (userPosition-1) / size;
+            second = (userPosition - 1) % size;
         }
 
         public int getFirst() {

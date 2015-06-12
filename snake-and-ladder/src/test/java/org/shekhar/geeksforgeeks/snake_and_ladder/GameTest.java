@@ -110,7 +110,7 @@ public class GameTest {
     public void givenGameBoardWithLaddersAndSnakes_WhenUserThrowDieAndUserLandsOnSnake_ThenUserShouldBeMovedToLowerPosition() throws Exception {
         Ladder[] ladders = {Ladder.from(4, 24), Ladder.from(8, 34), Ladder.from(44, 78), Ladder.from(72, 93)};
         Snake[] snakes = {Snake.at(15, 5)};
-        Board board = Board.newBoardWithLaddersAndSnakes(ladders, snakes);
+        Board board = Board.newBoardWithLaddersAndSnakes(ladders, snakes, 10, 10);
         Game game = new Game(board);
 
         game.turn(5);
@@ -122,6 +122,22 @@ public class GameTest {
         int userPosition = game.userPosition();
 
         assertThat(userPosition, is(equalTo(5)));
+
+    }
+
+    /*
+    * Board taken from http://www.geeksforgeeks.org/snake-ladder-problem-2/
+     */
+    @Test
+    public void givenABoardWithLaddersAndSnakes_FindMinimumNumberOfDieThrowsToFinishTheGame() throws Exception {
+        Ladder[] ladders = {Ladder.from(3, 22), Ladder.from(5, 8), Ladder.from(11, 26), Ladder.from(20, 29)};
+        Snake[] snakes = {Snake.at(17, 4), Snake.at(19, 7), Snake.at(21, 9), Snake.at(27, 1)};
+        Board board = Board.newBoardWithLaddersAndSnakes(ladders, snakes, 5, 6);
+        Game game = new Game(board);
+
+        int count = game.numberOfDieThrowsToFinish();
+        assertThat(count, is(equalTo(3)));
+
 
     }
 }
