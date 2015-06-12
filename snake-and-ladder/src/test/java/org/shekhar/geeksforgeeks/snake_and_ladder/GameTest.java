@@ -1,5 +1,6 @@
 package org.shekhar.geeksforgeeks.snake_and_ladder;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -8,22 +9,82 @@ import static org.junit.Assert.assertThat;
 
 public class GameTest {
 
+    private Game game;
+
+    @Before
+    public void createGame() {
+        game =  new Game(Board.emptyBoard());
+    }
+
     @Test
     public void givenGameBoardWithoutLaddersAndSnakes_WhenUserThrowsADieOnce_ThenUserPositionIsMovedByNumberOnDie() throws Exception {
-        int[][] board = new int[10][10];
         int numberOnDie = 1;
-        Game game = new Game(board);
-        int userPosition = game.turn(numberOnDie);
+        game.turn(numberOnDie);
+        int userPosition = game.userPosition();
         assertThat(userPosition, is(equalTo(1)));
     }
 
     @Test
     public void givenGameBoardWithoutLaddersAndSnakes_WhenUserThrowsDieMultipleTimes_ThenUserPositionIsSumOfAllDieNumbers() throws Exception {
-        int[][] board = new int[10][10];
-        Game game = new Game(board);
         game.turn(1);
         game.turn(5);
-        int userPosition = game.turn(3);
+        game.turn(3);
+        int userPosition = game.userPosition();
         assertThat(userPosition, is(equalTo(9)));
+    }
+
+    @Test
+    public void givenGameBoardWithoutLaddersAndSnakes_WhenUserThrowsDieMultipleTimes_ThenGameStatusIsInProgress() throws Exception {
+        game.turn(5);
+        game.turn(5);
+        game.turn(1);
+        game.turn(5);
+
+        int userPosition = game.userPosition();
+        assertThat(userPosition,is(equalTo(16)));
+
+        GameStatus status = game.status();
+        assertThat(status,is(equalTo(GameStatus.IN_PROGRESS)));
+    }
+
+    @Test
+    public void givenGameBoardWithoutLaddersAndSnakes_WhenUserThrowsDieMultipleTimesToReach100_ThenUserWins() throws Exception {
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        game.turn(5);
+        int userPosition = game.userPosition();
+        assertThat(userPosition,is(equalTo(100)));
+
+        GameStatus status = game.status();
+        assertThat(status,is(equalTo(GameStatus.FINISHED)));
+    }
+
+    @Test
+    public void givenGameBoardWithLadder_WhenUserThrowADieAndMoveToPositionWithLadder_ThenUserShouldClimbTheLadderToReachNextPosition() throws Exception {
+        Board board = Board.newBoardWithLadder(Ladder.from(4, 24));
+        Game game = new Game(board);
+
+        game.turn(4);
+
+        int userPosition = game.userPosition();
+
+        assertThat(userPosition,is(equalTo(24)));
     }
 }
