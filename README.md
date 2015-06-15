@@ -1,2 +1,2 @@
 # geekforgeeks
-geek for geeks solutions
+geek for geeks solutions in Java
