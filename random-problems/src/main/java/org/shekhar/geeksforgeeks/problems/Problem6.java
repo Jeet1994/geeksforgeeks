@@ -1,6 +1,7 @@
 package org.shekhar.geeksforgeeks.problems;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Given an array of integers, find the nearest smaller number for every element such that the smaller element is on left side.
